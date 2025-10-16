@@ -107,7 +107,9 @@ Nodo<T>* eraseRec(Nodo<T>*p, const t& x){
             return aux;
         } else {
             //tiene 2 hijos
-
+            Nodo<T>* aux = minNode(p->der);
+            p->dato = aux->dato;
+            p->der = eraseRec(p->der,aux->dato);
         }
     } 
 }
