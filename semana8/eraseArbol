@@ -1,0 +1,113 @@
+template <class T>
+class Nodo {
+public:
+    T dato;
+    Nodo* izq;
+    Nodo* der;
+    explicit Nodo(const T& x) : dato(x), izq(nullptr), der(nullptr) {}
+};
+
+template <class T>
+class ABB {
+private:
+    Nodo<T>* raiz = nullptr;
+
+    // ---- Helpers ----
+    int alturaRec(const Nodo<T>* p) const;
+    int tamRec(const Nodo<T>* p) const;
+    bool containsRec(const Nodo<T>* p, const T& x) const;
+    const Nodo<T>* minNode(const Nodo<T>* p) const;
+    const Nodo<T>* maxNode(const Nodo<T>* p) const;
+    Nodo<T>* eraseRec(Nodo<T>* p, const T& x);
+    void inordenRec(const Nodo<T>* p, std::vector<T>& out) const;
+    void clearRec(Nodo<T>* p);
+    Nodo<T>* insertarRec(Nodo<T>* p, const T& x);
+
+public:
+    ABB() = default;
+    ~ABB(){ clear(); }
+
+    bool isEmpty() const ;
+    void clear();
+    bool contains(const T& x);
+    void erase(const T& x);
+    const T& min() const;
+    const T& max() const;
+    int height() const;
+    int size()   const;
+    std::vector<T> inorden() const;
+    void insert(const T& x);
+};
+
+template <class T>
+Nodo<T>* ABB<T>::insertarRec(Nodo<T>* p, const T& x){
+    //TODO
+    if (p == nullptr) return new Nodo<T>(x);
+    if (x>p->dato) p->der = insertarRec(p->der, x);
+    else if (x<p->dato) p->izq = insertarRec(p->izq, x);
+    return p;
+}
+
+template <class T>
+void ABB<T>::insert(const T& x){
+    //TODO
+    raiz = insertarRec(raiz, x);
+}
+
+template <class T>
+int ABB<T>::tamRec(const Nodo<T>* p) const{
+    //TODO
+    if (p==nullptr) return 0;
+    else return 1 + tamRec(p->der) + tamRec(p->izq);
+}
+
+template <class T>
+int ABB<T>::size() const{
+    //TODO
+    int tamanio=0;
+    return tamanio = tamRec(raiz);
+}
+template <class T>
+
+//RESOLVER BIEN
+/*bool ABB<T>::containsRec(const Nodo<T>* p, const T& x) const{
+    //TODO
+    if (p==nullptr) return false;
+    else if (x==p->dato) return true; 
+    else if (x<p->dato) return containsRec(p->izq, x);
+    else if (x>p->dato) return containsRec(p->der,x);
+}
+
+template <class T>
+bool ABB<T>::contains(const T& x) const{
+    //TODO
+    bool contiene;
+    return contiene = contains(x);
+}*/ 
+
+
+Nodo<T>* eraseRec(Nodo<T>*p, const t& x){
+    if (!p) return nullptr;
+    if (x<p->dato) {
+        p->izq = eraseRec(p->izq,x);
+    } else if (x>p->dato) {
+        p->der = eraseRec(p->der,x);
+    } else {
+        //encontrar el nodo, borrarlo y reacomodar hijos
+        if (!p->izq &&!p->der){
+            delete p;
+            return nullptr;
+        } else if (!p->izq){
+            Nodo<T>* aux = p->der; 
+            delete p;
+            return aux;
+        } else if (!p->der){
+            Nodo<T> aux = p->izq;
+            delete p;
+            return aux;
+        } else {
+            //tiene 2 hijos
+
+        }
+    } 
+}
